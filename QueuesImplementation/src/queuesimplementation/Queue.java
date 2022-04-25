@@ -16,25 +16,56 @@ Cost:
 */
 package queuesimplementation;
 
-import java.util.LinkedList;
-
 public class Queue {
-    private LinkedList l;
+    public static final int ARR_LENGTH = 16;
+    
+    private static int read;
+    private static int write;
+    private static int size;
+    private static int arr[];
     
     public Queue(){
-        l = new LinkedList();
+        size = 0;
+        read = 0;
+        write = 0;
+        arr = new int[ARR_LENGTH];
     }
 
     public void enqueue(int value){
-        l.add(value);
+        if (write == ARR_LENGTH && read > 1) {
+            write = 0;
+	}
+	if (write == ARR_LENGTH && read == 0) {
+            System.out.println("FULL Queue!");
+        }
+        else{
+            arr[write] = value;
+            write++;
+            size++;
+        }
     } 
     
-    public Object dequeue(){
-        return l.pop();
+    public int dequeue(){
+        if (empty()) {
+            read = 0;
+            write = 0;
+            return -1;
+        }
+        if (read == ARR_LENGTH) {
+            read = 0;
+        }
+        
+        int aux = arr[read];
+        arr[read] = 0;
+        
+        read++;
+        size--;
+        
+        return aux;
     }
     
     public boolean empty(){
-        return l.isEmpty();
+        return size == 0;
     }
 
 }
